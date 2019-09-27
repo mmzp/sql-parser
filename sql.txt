@@ -1,0 +1,13 @@
+CREATE TABLE `tbl1`(
+    id   int(10) unsigned  AUTO_INCREMENT  NOT NULL ,
+    name   varchar(50) default '',
+    weight DECIMAL(5,2),roles_BIT bit(10),
+    size ENUM('x-small', 'small', 'medium', 'large', 'x-large') COMMENT "尺寸",
+    type tinyint(3) unsigned NOT NULL DEFAULT 0  COMMENT '客户端类型，0：未知；1：微信小程序；',
+    `t` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_name` (`name`),
+    KEY `idx_app_id` (`app_id`,id)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='应用表';
+
+

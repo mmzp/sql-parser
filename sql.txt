@@ -5,6 +5,7 @@ CREATE TABLE `tbl1`(
     size ENUM('x-small', 'small', 'medium', 'large', 'x-large') COMMENT "尺寸",
     type tinyint(3) unsigned NOT NULL DEFAULT 0  COMMENT '客户端类型，0：未知；1：微信小程序；',
     `t` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `url` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '地址',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_name` (`name`),
     KEY `idx_app_id` (`app_id`,id)

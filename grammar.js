@@ -658,6 +658,7 @@ var grammar = {
                     let comment = '';
                     let default_value = null;
                     let on_update_current_timestamp = false;
+                    let charset = '';
                     if (d[3] && d[3][1]) {
                         for (let _item of d[3][1]) {
                             const optionInfo = _item;
@@ -668,6 +669,7 @@ var grammar = {
                                     case 'COMMENT': comment = optionInfo.value; break;
                                     case 'DEFAULT': default_value = optionInfo.value; break;
                                     case 'ON UPDATE CURRENT_TIMESTAMP': on_update_current_timestamp = optionInfo.value; break;
+                                    case 'CHARSET': charset = optionInfo.value; break;
                                 }
                             }
                         }
@@ -688,6 +690,9 @@ var grammar = {
                     if (on_update_current_timestamp) {
                         result.on_update_current_timestamp = on_update_current_timestamp;
                     }
+                    if (charset) {
+                        result.charset = charset;
+                    }
                     return result;
                 }
         	},
@@ -698,6 +703,7 @@ var grammar = {
     {"name": "column_def_option", "symbols": ["field_comment"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_default_value"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_update_value"], "postprocess": d => d[0]},
+    {"name": "column_def_option", "symbols": ["field_charset"], "postprocess": d => d[0]},
     {"name": "field_not_null$subexpression$1$subexpression$1", "symbols": [/[nN]/, /[oO]/, /[tT]/, {"literal":" "}, /[nN]/, /[uU]/, /[lL]/, /[lL]/], "postprocess": function(d) {return d.join(""); }},
     {"name": "field_not_null$subexpression$1", "symbols": ["field_not_null$subexpression$1$subexpression$1"]},
     {"name": "field_not_null$subexpression$1$subexpression$2", "symbols": [/[nN]/, /[uU]/, /[lL]/, /[lL]/], "postprocess": function(d) {return d.join(""); }},
@@ -740,6 +746,18 @@ var grammar = {
             return {
                 key: 'ON UPDATE CURRENT_TIMESTAMP',
                 value: true,
+            };
+        }
+                },
+    {"name": "field_charset$subexpression$1$subexpression$1", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[aA]/, /[cC]/, /[tT]/, /[eE]/, /[rR]/, {"literal":" "}, /[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$1"]},
+    {"name": "field_charset$subexpression$1$subexpression$2", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$2"]},
+    {"name": "field_charset", "symbols": ["field_charset$subexpression$1", "__", "word"], "postprocess": 
+        d => {
+            return {
+                key: 'CHARSET',
+                value: d[2],
             };
         }
                 },

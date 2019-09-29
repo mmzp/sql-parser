@@ -8,6 +8,7 @@ column_def
             let comment = '';
             let default_value = null;
             let on_update_current_timestamp = false;
+            let charset = '';
             if (d[3] && d[3][1]) {
                 for (let _item of d[3][1]) {
                     const optionInfo = _item;
@@ -18,6 +19,7 @@ column_def
                             case 'COMMENT': comment = optionInfo.value; break;
                             case 'DEFAULT': default_value = optionInfo.value; break;
                             case 'ON UPDATE CURRENT_TIMESTAMP': on_update_current_timestamp = optionInfo.value; break;
+                            case 'CHARSET': charset = optionInfo.value; break;
                         }
                     }
                 }
@@ -38,6 +40,9 @@ column_def
             if (on_update_current_timestamp) {
                 result.on_update_current_timestamp = on_update_current_timestamp;
             }
+            if (charset) {
+                result.charset = charset;
+            }
             return result;
         }
 	%}
@@ -52,6 +57,7 @@ column_def_option
     | field_comment {% d => d[0] %}
     | field_default_value {% d => d[0] %}
     | field_update_value {% d => d[0] %}
+    | field_charset {% d => d[0] %}
 
 field_not_null
     -> ("NOT NULL"i | "NULL"i) {%
@@ -89,6 +95,16 @@ field_update_value
                 return {
                     key: 'ON UPDATE CURRENT_TIMESTAMP',
                     value: true,
+                };
+            }
+        %}
+
+field_charset
+    -> ("CHARACTER SET"i | "CHARSET"i) __ word {%
+            d => {
+                return {
+                    key: 'CHARSET',
+                    value: d[2],
                 };
             }
         %}

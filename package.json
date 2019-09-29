@@ -5,14 +5,12 @@
     "license": "Apache-2.0",
     "author": "mmzp <mmzp@qq.com>",
     "dependencies": {
+        "dumper.js": "^1.3.1",
         "nearley": "^2.19.0"
     },
     "scripts": {
         "grammar": "npx nearleyc ./gramars/sql.ne -o grammar.js",
-        "start": "node index.js",
-        "dev": "yarn run grammar && node index.js"
+        "dev": "yarn run grammar && node demo.js"
     },
-    "devDependencies": {
-        "dumper.js": "^1.3.1"
-    }
+    "devDependencies": {}
 }

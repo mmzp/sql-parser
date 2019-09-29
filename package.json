@@ -1,5 +1,5 @@
 {
-    "name": "@mmzp/sql-parser",
+    "name": "@k-tavern/sql-parser",
     "version": "0.0.1",
     "main": "index.js",
     "license": "Apache-2.0",

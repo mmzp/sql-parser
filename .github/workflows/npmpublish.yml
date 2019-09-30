@@ -28,8 +28,7 @@ jobs:
         with:
           node-version: 10
           registry-url: https://registry.npmjs.org/
-      - run: npm config set //registry.npmjs.org/:username=linzf
       - run: npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-      - run: npm publish
+      - run: npm publish --access public
         env:
           NPM_AUTH_TOKEN: ${{secrets.npm_token}}

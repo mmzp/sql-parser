@@ -124,10 +124,10 @@ var grammar = {
         }
         },
     {"name": "table_name", "symbols": ["word"], "postprocess": d => d[0]},
-    {"name": "table_name", "symbols": [{"literal":"`"}, "word", {"literal":"`"}], "postprocess": d => d[1]},
+    {"name": "table_name", "symbols": ["btstring"], "postprocess": d => d[0]},
     {"name": "field_name", "symbols": ["word"], "postprocess": d => d[0]},
-    {"name": "field_name", "symbols": [{"literal":"`"}, "word", {"literal":"`"}], "postprocess": d => d[1]},
-    {"name": "string", "symbols": ["dqstring"]},
+    {"name": "field_name", "symbols": ["btstring"], "postprocess": d => d[0]},
+    {"name": "string", "symbols": ["dqstring"], "postprocess": d => d[0]},
     {"name": "string", "symbols": ["sqstring"], "postprocess": d => d[0]},
     {"name": "word", "symbols": [/[A-Za-z_]/], "postprocess": id},
     {"name": "word", "symbols": ["word", /[A-Za-z0-9_]/], "postprocess": d => '' + d[0] + d[1]},
@@ -764,6 +764,7 @@ var grammar = {
     {"name": "field_comment$subexpression$1", "symbols": [/[cC]/, /[oO]/, /[mM]/, /[mM]/, /[eE]/, /[nN]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
     {"name": "field_comment", "symbols": ["field_comment$subexpression$1", "__", "string"], "postprocess":  
         d => {
+            console.log(d, 'zzzz');
             return {
                 key: 'COMMENT',
                 value: d[2],

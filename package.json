@@ -1,6 +1,6 @@
 {
     "name": "@k-tavern/sql-parser",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "main": "index.js",
     "license": "Apache-2.0",
     "author": "mmzp <mmzp@qq.com>",

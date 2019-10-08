@@ -1,6 +1,6 @@
 {
     "name": "@k-tavern/sql-parser",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "index.js",
     "license": "Apache-2.0",
     "author": "mmzp <mmzp@qq.com>",
@@ -11,7 +11,5 @@
         "grammar": "npx nearleyc ./gramars/sql.ne -o grammar.js",
         "dev": "yarn run grammar && node demo.js"
     },
-    "devDependencies": {
-        "dumper.js": "^1.3.1"
-    }
+    "devDependencies": {}
 }

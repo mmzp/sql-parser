@@ -764,7 +764,6 @@ var grammar = {
     {"name": "field_comment$subexpression$1", "symbols": [/[cC]/, /[oO]/, /[mM]/, /[mM]/, /[eE]/, /[nN]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
     {"name": "field_comment", "symbols": ["field_comment$subexpression$1", "__", "string"], "postprocess":  
         d => {
-            console.log(d, 'zzzz');
             return {
                 key: 'COMMENT',
                 value: d[2],

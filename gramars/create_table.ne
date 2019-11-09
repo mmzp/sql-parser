@@ -34,8 +34,11 @@ table_option_collate
 table_option_comment
     -> "COMMENT"i _ "=" _ string {% d => d[4] %}
 
+index_type
+    -> _ "USING"i _ ("BTREE"i | "HASH"i) _ {% d => d[3] %}
+
 primary_key
-    -> _ "PRIMARY KEY"i _ "(" key_field_list ")" _ ",":? {%
+    -> _ "PRIMARY KEY"i _ "(" key_field_list ")" index_type:? _ ",":? {%
             d => {
                 return {
                     type: 'primary_key',
@@ -44,7 +47,7 @@ primary_key
             }
         %}
 index_key
-    -> _ "KEY"i __ field_name _ "(" key_field_list ")" _ ",":? {%
+    -> _ "KEY"i __ field_name _ "(" key_field_list ")" index_type:? _ ",":? {%
             d => {
                 return {
                     type: 'index_key',
@@ -54,7 +57,7 @@ index_key
             }
         %}
 unique_key
-    -> _ "UNIQUE KEY"i __ field_name _ "(" key_field_list ")" _ ",":? {%
+    -> _ "UNIQUE KEY"i __ field_name _ "(" key_field_list ")" index_type:? _ ",":? {%
             d => {
                 return {
                     type: 'unique_key',

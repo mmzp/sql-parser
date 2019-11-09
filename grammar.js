@@ -808,10 +808,18 @@ var grammar = {
     {"name": "table_option_collate", "symbols": ["table_option_collate$ebnf$1", "table_option_collate$subexpression$1", "_", {"literal":"="}, "_", "word"], "postprocess": d => d[5]},
     {"name": "table_option_comment$subexpression$1", "symbols": [/[cC]/, /[oO]/, /[mM]/, /[mM]/, /[eE]/, /[nN]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
     {"name": "table_option_comment", "symbols": ["table_option_comment$subexpression$1", "_", {"literal":"="}, "_", "string"], "postprocess": d => d[4]},
+    {"name": "index_type$subexpression$1", "symbols": [/[uU]/, /[sS]/, /[iI]/, /[nN]/, /[gG]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "index_type$subexpression$2$subexpression$1", "symbols": [/[bB]/, /[tT]/, /[rR]/, /[eE]/, /[eE]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "index_type$subexpression$2", "symbols": ["index_type$subexpression$2$subexpression$1"]},
+    {"name": "index_type$subexpression$2$subexpression$2", "symbols": [/[hH]/, /[aA]/, /[sS]/, /[hH]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "index_type$subexpression$2", "symbols": ["index_type$subexpression$2$subexpression$2"]},
+    {"name": "index_type", "symbols": ["_", "index_type$subexpression$1", "_", "index_type$subexpression$2", "_"], "postprocess": d => d[3]},
     {"name": "primary_key$subexpression$1", "symbols": [/[pP]/, /[rR]/, /[iI]/, /[mM]/, /[aA]/, /[rR]/, /[yY]/, {"literal":" "}, /[kK]/, /[eE]/, /[yY]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "primary_key$ebnf$1", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "primary_key$ebnf$1", "symbols": ["index_type"], "postprocess": id},
     {"name": "primary_key$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "primary_key", "symbols": ["_", "primary_key$subexpression$1", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "_", "primary_key$ebnf$1"], "postprocess": 
+    {"name": "primary_key$ebnf$2", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "primary_key$ebnf$2", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "primary_key", "symbols": ["_", "primary_key$subexpression$1", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "primary_key$ebnf$1", "_", "primary_key$ebnf$2"], "postprocess": 
         d => {
             return {
                 type: 'primary_key',
@@ -820,9 +828,11 @@ var grammar = {
         }
                 },
     {"name": "index_key$subexpression$1", "symbols": [/[kK]/, /[eE]/, /[yY]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "index_key$ebnf$1", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "index_key$ebnf$1", "symbols": ["index_type"], "postprocess": id},
     {"name": "index_key$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "index_key", "symbols": ["_", "index_key$subexpression$1", "__", "field_name", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "_", "index_key$ebnf$1"], "postprocess": 
+    {"name": "index_key$ebnf$2", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "index_key$ebnf$2", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "index_key", "symbols": ["_", "index_key$subexpression$1", "__", "field_name", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "index_key$ebnf$1", "_", "index_key$ebnf$2"], "postprocess": 
         d => {
             return {
                 type: 'index_key',
@@ -832,9 +842,11 @@ var grammar = {
         }
                 },
     {"name": "unique_key$subexpression$1", "symbols": [/[uU]/, /[nN]/, /[iI]/, /[qQ]/, /[uU]/, /[eE]/, {"literal":" "}, /[kK]/, /[eE]/, /[yY]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "unique_key$ebnf$1", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "unique_key$ebnf$1", "symbols": ["index_type"], "postprocess": id},
     {"name": "unique_key$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "unique_key", "symbols": ["_", "unique_key$subexpression$1", "__", "field_name", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "_", "unique_key$ebnf$1"], "postprocess": 
+    {"name": "unique_key$ebnf$2", "symbols": [{"literal":","}], "postprocess": id},
+    {"name": "unique_key$ebnf$2", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "unique_key", "symbols": ["_", "unique_key$subexpression$1", "__", "field_name", "_", {"literal":"("}, "key_field_list", {"literal":")"}, "unique_key$ebnf$1", "_", "unique_key$ebnf$2"], "postprocess": 
         d => {
             return {
                 type: 'unique_key',

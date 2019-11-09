@@ -10,5 +10,5 @@ CREATE TABLE `apps` (
   `url2` smallint(6) NOT NULL COMMENT '地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`),
-  KEY `idx_url` (`url`(10))
+  KEY `idx_url` (`url`(10)) USING btree
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='应用表';

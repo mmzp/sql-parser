@@ -843,7 +843,10 @@ var grammar = {
             };
         }
                 },
-    {"name": "key_field_list", "symbols": ["_", "field_name", "_"], "postprocess": d => [d[1]]},
+    {"name": "key_field_list$ebnf$1$subexpression$1", "symbols": [{"literal":"("}, "_", "unsigned_int", "_", {"literal":")"}]},
+    {"name": "key_field_list$ebnf$1", "symbols": ["key_field_list$ebnf$1$subexpression$1"], "postprocess": id},
+    {"name": "key_field_list$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "key_field_list", "symbols": ["_", "field_name", "key_field_list$ebnf$1", "_"], "postprocess": d => [d[1]]},
     {"name": "key_field_list", "symbols": ["key_field_list", "_", {"literal":","}, "_", "field_name"], "postprocess": 
         d => {
             return d[0].concat(d[4]);

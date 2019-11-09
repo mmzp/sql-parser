@@ -64,7 +64,7 @@ unique_key
             }
         %}
 key_field_list
-    -> _ field_name _ {% d => [d[1]] %}
+    -> _ field_name ("(" _ unsigned_int _ ")"):? _ {% d => [d[1]] %}
     | key_field_list _ "," _ field_name {%
             d => {
                 return d[0].concat(d[4]);

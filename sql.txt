@@ -1,14 +1,12 @@
-CREATE TABLE `apps` (
+CREATE TABLE `player` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL DEFAULT '',
-  `icon` varchar(255) NOT NULL DEFAULT '',
+  `player_id` bigint(20) unsigned NOT NULL,
+  `nickname` varchar(50) NOT NULL DEFAULT '',
+  `avatar` varchar(255) NOT NULL DEFAULT '',
+  `gender` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `coin_balance` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '金币余额',
+  `status` tinyint (3) unsigned NOT NULL DEFAULT '0',
   `created_at` int(10) unsigned NOT NULL,
-  `updated_at` int(10) unsigned NOT NULL,
-  `_` json DEFAULT NULL,
-  `t` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `url` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '地址',
-  `url2` smallint(6) NOT NULL COMMENT '地址',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_name` (`name`),
-  KEY `idx_url` (`url`(10)) USING btree
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='应用表';
+  `last_sign_at` double ( 10 , 3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='玩家信息表'

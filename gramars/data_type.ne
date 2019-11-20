@@ -5,16 +5,16 @@ data_type
     | spatial_data_type {% d => d[0] %}
 numeric_type
     -> integer_type {% d => d[0] %}
-    | ("DECIMAL"i | "NUMERIC"i) ("(" (unsigned_int | unsigned_int "," unsigned_int) ")"):? {%
+    | ("DECIMAL"i | "NUMERIC"i) (_ "(" _ (unsigned_int | unsigned_int _ "," _ unsigned_int) _ ")" _):? {%
             d => {
                 let _m = 10;
                 let _d = 0;
-                if (d[1] && d[1][1]) {
-                    if (d[1][1].length === 1) {
-                        _m = d[1][1][0];
-                    } else if (d[1][1].length === 3) {
-                        _m = d[1][1][0];
-                        _d = d[1][1][2];
+                if (d[1] && d[1][3]) {
+                    if (d[1][3].length === 1) {
+                        _m = d[1][3][0];
+                    } else if (d[1][3].length === 5) {
+                        _m = d[1][3][0];
+                        _d = d[1][3][4];
                     }
                 }
                 return {
@@ -23,16 +23,16 @@ numeric_type
                 };
             }
         %}
-    | "FLOAT"i ("(" (unsigned_int | unsigned_int "," unsigned_int) ")"):? {%
+    | "FLOAT"i (_ "(" _ (unsigned_int | unsigned_int _ "," _ unsigned_int) _ ")" _):? {%
             d => {
                 let _m = 23;
                 let _d = 0;
-                if (d[1] && d[1][1]) {
-                    if (d[1][1].length === 1) {
-                        _m = d[1][1][0];
-                    } else if (d[1][1].length === 3) {
-                        _m = d[1][1][0];
-                        _d = d[1][1][2];
+                if (d[1] && d[1][3]) {
+                    if (d[1][3].length === 1) {
+                        _m = d[1][3][0];
+                    } else if (d[1][3].length === 5) {
+                        _m = d[1][3][0];
+                        _d = d[1][3][4];
                     }
                 }
                 return {
@@ -41,16 +41,16 @@ numeric_type
                 };
             }
         %}
-    | "DOUBLE"i ("(" (unsigned_int | unsigned_int "," unsigned_int) ")"):? {%
+    | "DOUBLE"i (_ "(" _ (unsigned_int | unsigned_int _ "," _ unsigned_int) _ ")"):? {%
             d => {
                 let _m = 53;
                 let _d = 0;
-                if (d[1] && d[1][1]) {
-                    if (d[1][1].length === 1) {
-                        _m = d[1][1][0];
-                    } else if (d[1][1].length === 3) {
-                        _m = d[1][1][0];
-                        _d = d[1][1][2];
+                if (d[1] && d[1][3]) {
+                    if (d[1][3].length === 1) {
+                        _m = d[1][3][0];
+                    } else if (d[1][3].length === 5) {
+                        _m = d[1][3][0];
+                        _d = d[1][3][4];
                     }
                 }
                 return {
@@ -59,18 +59,18 @@ numeric_type
                 };
             }
         %}
-    | "BIT"i "(" unsigned_int ")" {%
+    | "BIT"i _ "(" _ unsigned_int _ ")" {%
             d => {
                 return {
                     type: 'BIT',
-                    params: [ d[2] ],
+                    params: [ d[4] ],
                 };
             }
         %}
 integer_type
-    -> "TINYINT"i ("(" unsigned_int ")"):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
+    -> "TINYINT"i (_ "(" _ unsigned_int _ ")" _):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
             d => {
-                const length = d[1] ? d[1][1] : 4;
+                const length = d[1] ? d[1][3] : 4;
                 const result = {
                     type: 'TINYINT',
                     params: [ length ],
@@ -84,9 +84,9 @@ integer_type
                 return result;
             }
         %}
-    | "SMALLINT"i ("(" unsigned_int ")"):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
+    | "SMALLINT"i (_ "(" _ unsigned_int _ ")" _):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
             d => {
-                const length = d[1] ? d[1][1] : 6;
+                const length = d[1] ? d[1][3] : 6;
                 const result = {
                     type: 'SMALLINT',
                     params: [ length ],
@@ -100,9 +100,9 @@ integer_type
                 return result;
             }
         %}
-    | "MEDIUMINT"i ("(" unsigned_int ")"):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
+    | "MEDIUMINT"i (_ "(" _ unsigned_int _ ")" _):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
             d => {
-                const length = d[1] ? d[1][1] : 8;
+                const length = d[1] ? d[1][3] : 8;
                 const result = {
                     type: 'MEDIUMINT',
                     params: [ length ],
@@ -116,9 +116,9 @@ integer_type
                 return result;
             }
         %}
-    | "INT"i ("(" unsigned_int ")"):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
+    | "INT"i (_ "(" _ unsigned_int _ ")" _):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
             d => {
-                const length = d[1] ? d[1][1] : 11;
+                const length = d[1] ? d[1][3] : 11;
                 const result = {
                     type: 'INT',
                     params: [ length ],
@@ -132,9 +132,9 @@ integer_type
                 return result;
             }
         %}
-    | "BIGINT"i ("(" unsigned_int ")"):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
+    | "BIGINT"i (_ "(" _ unsigned_int _ ")" _):? (__ "UNSIGNED"i):? (__ "ZEROFILL"i):? {%
             d => {
-                const length = d[1] ? d[1][1] : 20;
+                const length = d[1] ? d[1][3] : 20;
                 const result = {
                     type: 'BIGINT',
                     params: [ length ],
@@ -157,11 +157,11 @@ datetime_type
                 return result;
             }
         %}
-    | "DATETIME"i ("(" unsigned_int ")"):? {%
+    | "DATETIME"i (_ "(" _ unsigned_int _ ")" _):? {%
             d => {
                 let params;
-                if (d[1] && d[1][1]) {
-                    params.push(d[1][1]);
+                if (d[1] && d[1][3]) {
+                    params.push(d[1][3]);
                 }
                 const result = {
                     type: 'DATETIME',
@@ -172,11 +172,11 @@ datetime_type
                 return result;
             }
         %}
-    | "TIMESTAMP"i ("(" unsigned_int ")"):? {%
+    | "TIMESTAMP"i (_ "(" _ unsigned_int _ ")" _):? {%
             d => {
                 let params;
-                if (d[1] && d[1][1]) {
-                    params.push(d[1][1]);
+                if (d[1] && d[1][3]) {
+                    params.push(d[1][3]);
                 }
                 const result = {
                     type: 'TIMESTAMP',
@@ -187,11 +187,11 @@ datetime_type
                 return result;
             }
         %}
-    | "TIME"i ("(" unsigned_int ")"):? {%
+    | "TIME"i (_ "(" _ unsigned_int _ ")" _):? {%
             d => {
                 let params;
-                if (d[1] && d[1][1]) {
-                    params.push(d[1][1]);
+                if (d[1] && d[1][3]) {
+                    params.push(d[1][3]);
                 }
                 const result = {
                     type: 'TIME',
@@ -202,7 +202,7 @@ datetime_type
                 return result;
             }
         %}
-    | "YEAR"i ("(" unsigned_int ")"):? {%
+    | "YEAR"i (_ "(" _ unsigned_int _ ")" _):? {%
             d => {
                 const result = {
                     type: 'YEAR',
@@ -211,35 +211,35 @@ datetime_type
             }
         %}
 string_type
-    -> "CHAR"i "(" unsigned_int ")" {%
+    -> "CHAR"i _ "(" _ unsigned_int _ ")" {%
             d => {
                 return {
                     type: 'CHAR',
-                    params: [ d[2] ],
+                    params: [ d[4] ],
                 };
             }
         %}
-    | "VARCHAR"i "(" unsigned_int ")" {%
+    | "VARCHAR"i _ "(" _ unsigned_int _ ")" {%
             d => {
                 return {
                     type: 'VARCHAR',
-                    params: [ d[2] ],
+                    params: [ d[4] ],
                 };
             }
         %}
-    | "BINARY"i "(" unsigned_int ")" {%
+    | "BINARY"i _ "(" _ unsigned_int _ ")" {%
             d => {
                 return {
                     type: 'BINARY',
-                    params: [ d[2] ],
+                    params: [ d[4] ],
                 };
             }
         %}
-    | "VARBINARY"i "(" unsigned_int ")" {%
+    | "VARBINARY"i _ "(" _ unsigned_int _ ")" {%
             d => {
                 return {
                     type: 'VARBINARY',
-                    params: [ d[2] ],
+                    params: [ d[4] ],
                 };
             }
         %}
@@ -306,19 +306,19 @@ string_type
                 };
             }
         %}
-    | "ENUM"i "(" (string _ ("," _):?):+ ")" {%
+    | "ENUM"i _ "(" _ (string _ ("," _):?):+ _ ")" {%
             d => {
                 return {
                     type: 'ENUM',
-                    params: d[2].map(i => i[0]),
+                    params: d[4].map(i => i[0]),
                 };
             }
         %}
-    | "SET"i "(" (string _ ("," _):?):+ ")" {%
+    | "SET"i _ "(" _ (string _ ("," _):?):+ _ ")" {%
             d => {
                 return {
                     type: 'SET',
-                    params: d[2].map(i => i[0]),
+                    params: d[4].map(i => i[0]),
                 };
             }
         %}

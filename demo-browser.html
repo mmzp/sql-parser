@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>rollup 打包测试</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <script src="./sql-parser.min.js"></script>
+        <script>
+            var sqlText = "CREATE TABLE `player` ("+
+                "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"+
+                "`player_id` bigint(20) unsigned NOT NULL,"+
+                "`nickname` varchar(50) NOT NULL DEFAULT '',"+
+                "`avatar` varchar(255) NOT NULL DEFAULT '',"+
+                "`gender` tinyint(3) unsigned NOT NULL DEFAULT '0',"+
+                "`coin_balance` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '金币余额',"+
+                "`status` tinyint (3) unsigned NOT NULL DEFAULT '0',"+
+                "`created_at` int(10) unsigned NOT NULL,"+
+                "`last_sign_at` double ( 10 , 3) NOT NULL DEFAULT '0',"+
+                "PRIMARY KEY (`id`)"+
+            ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='玩家信息表'";
+            var result = window.SqlParser.parse(sqlText);
+            console.log(result);
+        </script>
+    </body>
+</html>

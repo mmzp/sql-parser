@@ -9,6 +9,7 @@ column_def
             let default_value = null;
             let on_update_current_timestamp = false;
             let charset = '';
+            let collate = '';
             if (d[3] && d[3][1]) {
                 for (let _item of d[3][1]) {
                     const optionInfo = _item;
@@ -20,6 +21,7 @@ column_def
                             case 'DEFAULT': default_value = optionInfo.value; break;
                             case 'ON UPDATE CURRENT_TIMESTAMP': on_update_current_timestamp = optionInfo.value; break;
                             case 'CHARSET': charset = optionInfo.value; break;
+                            case 'COLLATE': collate = optionInfo.value; break;
                         }
                     }
                 }
@@ -42,6 +44,9 @@ column_def
             }
             if (charset) {
                 result.charset = charset;
+            }
+            if (collate) {
+                result.collate = collate;
             }
             return result;
         }
@@ -104,6 +109,16 @@ field_charset
             d => {
                 return {
                     key: 'CHARSET',
+                    value: d[2],
+                };
+            }
+        %}
+
+field_charset
+    -> "COLLATE"i __ word {%
+            d => {
+                return {
+                    key: 'COLLATE',
                     value: d[2],
                 };
             }

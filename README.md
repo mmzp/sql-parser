@@ -11,7 +11,7 @@ yarn dev
 ```
 
 ```
-// 构建支持浏览器环境的代码文件，浏览器端直接引用构建出来的 sql-parser.min.js 文件即可，demo-browser.html 为调用示例
+// 构建支持浏览器环境的代码文件，浏览器端直接引用构建出来的 sql-parser.min.js 文件即可，demo.html 为调用示例
 yarn browser
 ```
 

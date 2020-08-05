@@ -117,7 +117,7 @@ var grammar = {
     {"name": "sstrchar", "symbols": [{"literal":"\\"}, "strescape"], "postprocess": function(d) { return JSON.parse("\""+d.join("")+"\""); }},
     {"name": "sstrchar$string$1", "symbols": [{"literal":"\\"}, {"literal":"'"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "sstrchar", "symbols": ["sstrchar$string$1"], "postprocess": function(d) {return "'"; }},
-    {"name": "strescape", "symbols": [/["\\\/bfnrt]/], "postprocess": id},
+    {"name": "strescape", "symbols": [/["\\/bfnrt]/], "postprocess": id},
     {"name": "strescape", "symbols": [{"literal":"u"}, /[a-fA-F0-9]/, /[a-fA-F0-9]/, /[a-fA-F0-9]/, /[a-fA-F0-9]/], "postprocess": 
         function(d) {
             return d.join("");
@@ -659,6 +659,7 @@ var grammar = {
                     let default_value = null;
                     let on_update_current_timestamp = false;
                     let charset = '';
+                    let collate = '';
                     if (d[3] && d[3][1]) {
                         for (let _item of d[3][1]) {
                             const optionInfo = _item;
@@ -670,6 +671,7 @@ var grammar = {
                                     case 'DEFAULT': default_value = optionInfo.value; break;
                                     case 'ON UPDATE CURRENT_TIMESTAMP': on_update_current_timestamp = optionInfo.value; break;
                                     case 'CHARSET': charset = optionInfo.value; break;
+                                    case 'COLLATE': collate = optionInfo.value; break;
                                 }
                             }
                         }
@@ -692,6 +694,9 @@ var grammar = {
                     }
                     if (charset) {
                         result.charset = charset;
+                    }
+                    if (collate) {
+                        result.collate = collate;
                     }
                     return result;
                 }
@@ -757,6 +762,15 @@ var grammar = {
         d => {
             return {
                 key: 'CHARSET',
+                value: d[2],
+            };
+        }
+                },
+    {"name": "field_charset$subexpression$2", "symbols": [/[cC]/, /[oO]/, /[lL]/, /[lL]/, /[aA]/, /[tT]/, /[eE]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset", "symbols": ["field_charset$subexpression$2", "__", "word"], "postprocess": 
+        d => {
+            return {
+                key: 'COLLATE',
                 value: d[2],
             };
         }

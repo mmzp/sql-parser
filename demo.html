@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>MySQL 建表语句解析</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yesmeck/jquery-jsonview@master/dist/jquery.jsonview.min.css">
+    </head>
+    <body>
+        <h3>建表语句：</h3>
+        <textarea id="sqlText" style="width: 500px; height: 200px;">
+CREATE TABLE `player` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT,
+    `player_id` bigint unsigned NOT NULL,
+    `nickname` varchar(50) NOT NULL DEFAULT '',
+    `avatar` varchar(255) NOT NULL DEFAULT '',
+    `gender` tinyint unsigned NOT NULL DEFAULT '0',
+    `coin_balance` int unsigned NOT NULL DEFAULT '0' COMMENT '金币余额',
+    `password` varchar(255) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL DEFAULT '',
+    `status` tinyint unsigned NOT NULL DEFAULT '0',
+    `created_at` int unsigned NOT NULL,
+    `last_sign_at` double(10,3) NOT NULL DEFAULT '0.000',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='玩家信息表';
+        </textarea>
+        <hr>
+        <h3>解析结果：</h3>
+        <div id="result"></div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/yesmeck/jquery-jsonview@master/dist/jquery.jsonview.min.js"></script>
+        <script src="./sql-parser.min.js"></script>
+        <script>
+            var sqlText = document.getElementById('sqlText').textContent;
+            var result = window.SqlParser.parse(sqlText);
+            $(function() {
+                $("#result").JSONView(result);
+            });
+        </script>
+    </body>
+</html>

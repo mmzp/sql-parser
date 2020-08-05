@@ -15,6 +15,11 @@ yarn dev
 yarn browser
 ```
 
+[在线示例 https://mmzp.github.io/sql-parser/browser/demo.html](https://mmzp.github.io/sql-parser/browser/demo.html)
+
+------
+
+
 解析结果如下：
 
 ```json

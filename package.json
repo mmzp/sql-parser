@@ -9,8 +9,8 @@
     },
     "scripts": {
         "grammar": "npx nearleyc ./gramars/sql.ne -o grammar.js",
-        "dev": "yarn run grammar && node demo.js",
-        "browser": "NODE_ENV=production yarn rollup -c"
+        "dev": "npm run grammar && node demo.js",
+        "browser": "NODE_ENV=production npx rollup -c"
     },
     "devDependencies": {
         "@babel/core": "^7.8.6",

@@ -5,7 +5,7 @@
     "license": "Apache-2.0",
     "author": "mmzp <mmzp@qq.com>",
     "dependencies": {
-        "nearley": "^2.19.0"
+        "nearley": "^2.19.5"
     },
     "scripts": {
         "grammar": "npx nearleyc ./gramars/sql.ne -o grammar.js",

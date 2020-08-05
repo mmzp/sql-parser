@@ -9,7 +9,7 @@ const ENV = process.env.NODE_ENV;
 export default {
   input: 'index.js',
   output: {
-    file: `sql-parser.min.js`,
+    file: `./browser/sql-parser.min.js`,
     format: 'umd',
     name: 'SqlParser'
   },

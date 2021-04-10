@@ -2,7 +2,9 @@ const sqlParser = require('./index');
 const fs = require('fs');
 
 (async () => {
-    const content = fs.readFileSync('./sql.txt').toString();
+    // const sqlFilename = './sql.txt';
+    const sqlFilename = './db.sql';
+    const content = fs.readFileSync(sqlFilename).toString();
     try {
         const result = sqlParser.parse(content);
         console.log(JSON.stringify(result, null, '    '));

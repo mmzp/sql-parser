@@ -2,10 +2,10 @@
 @include "./column.ne"
 
 create_definition_list
-    -> _ create_definition _ {% d => [d[1]] %}
-    | create_definition_list _ "," _ create_definition {%
+    -> create_definition {% d => [d[0]] %}
+    | create_definition_list "," create_definition {%
             d => {
-                return d[0].concat(d[4]) 
+                return d[0].concat(d[2]);
             }
         %}
 create_definition

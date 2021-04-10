@@ -1,7 +1,8 @@
 @include "./data_type.ne"
 
+# 字段定义
 column_def
-	-> field_name __ data_type (__ column_def_options):? {%
+	-> _ field_name __ data_type (__ column_def_options):? _ {%
 		d => {
             let allow_null = true;
             let auto_increment = false;
@@ -10,8 +11,8 @@ column_def
             let on_update_current_timestamp = false;
             let charset = '';
             let collate = '';
-            if (d[3] && d[3][1]) {
-                for (let _item of d[3][1]) {
+            if (d[4] && d[4][1]) {
+                for (let _item of d[4][1]) {
                     const optionInfo = _item;
                     if (optionInfo && optionInfo.key) {
                         switch (optionInfo.key) {
@@ -28,8 +29,8 @@ column_def
             }
             const result = {
                 type: 'column',
-                name: d[0],
-                data_type: d[2],
+                name: d[1],
+                data_type: d[3],
                 allow_null,
                 comment,
             };

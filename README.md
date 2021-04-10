@@ -4,15 +4,21 @@
 
 ```
 yarn install
+yarn dev
 ```
+或
 
 ```
-yarn dev
+npm i
+npm run dev
 ```
 
 ```
 // 构建支持浏览器环境的代码文件，浏览器端直接引用构建出来的 browser/sql-parser.min.js 文件即可，browser/demo.html 为调用示例
+
 yarn browser
+或
+npm run browser
 ```
 
 [在线示例 https://mmzp.github.io/sql-parser/browser/demo.html](https://mmzp.github.io/sql-parser/browser/demo.html)

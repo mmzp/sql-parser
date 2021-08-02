@@ -375,7 +375,7 @@ var grammar = {
                             const optionInfo = _item;
                             if (optionInfo && optionInfo.key) {
                                 switch (optionInfo.key) {
-                                    case 'NOT NULL': allow_null = !optionInfo.value; break;
+                                    case 'NOT NULL': allow_null = optionInfo.value; break;
                                     case 'AUTO_INCREMENT': auto_increment = optionInfo.value; break;
                                     case 'COMMENT': comment = optionInfo.value; break;
                                     case 'DEFAULT': default_value = optionInfo.value; break;
@@ -411,23 +411,28 @@ var grammar = {
                     return result;
                 }
         	},
-    {"name": "column_def_options", "symbols": ["_", "column_def_option", "_"], "postprocess": d => [d[1]]},
+    {"name": "column_def_options", "symbols": ["column_def_option"], "postprocess": d => [d[0]]},
     {"name": "column_def_options", "symbols": ["column_def_options", "__", "column_def_option"], "postprocess": d => d[0].concat(d[2])},
-    {"name": "column_def_option", "symbols": ["field_not_null"], "postprocess": d => d[0]},
+    {"name": "column_def_option", "symbols": ["field_not_null"], "postprocess": d => d[1]},
     {"name": "column_def_option", "symbols": ["field_auto_increment"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_comment"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_default_value"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_update_value"], "postprocess": d => d[0]},
     {"name": "column_def_option", "symbols": ["field_charset"], "postprocess": d => d[0]},
-    {"name": "field_not_null$subexpression$1$subexpression$1", "symbols": [/[nN]/, /[oO]/, /[tT]/, {"literal":" "}, /[nN]/, /[uU]/, /[lL]/, /[lL]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "field_not_null$subexpression$1", "symbols": ["field_not_null$subexpression$1$subexpression$1"]},
+    {"name": "field_not_null$subexpression$1$subexpression$1", "symbols": [/[nN]/, /[oO]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
     {"name": "field_not_null$subexpression$1$subexpression$2", "symbols": [/[nN]/, /[uU]/, /[lL]/, /[lL]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "field_not_null$subexpression$1", "symbols": ["field_not_null$subexpression$1$subexpression$2"]},
+    {"name": "field_not_null$subexpression$1", "symbols": ["field_not_null$subexpression$1$subexpression$1", "__", "field_not_null$subexpression$1$subexpression$2"]},
+    {"name": "field_not_null$subexpression$1$subexpression$3", "symbols": [/[nN]/, /[uU]/, /[lL]/, /[lL]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_not_null$subexpression$1", "symbols": ["field_not_null$subexpression$1$subexpression$3"]},
     {"name": "field_not_null", "symbols": ["field_not_null$subexpression$1"], "postprocess": 
         d => {
+            let allow_null = true;
+            if (d[0][0] && d[0][2] && (d[0][0] + ' ' + d[0][2]).toUpperCase() === 'NOT NULL') {
+                allow_null = false;
+            }
             return {
                 key: 'NOT NULL',
-                value: d[0][0] && d[0][0].toUpperCase() === 'NOT NULL',
+                value: allow_null,
             };
         }
                 },
@@ -455,8 +460,10 @@ var grammar = {
             };
         }
                 },
-    {"name": "field_update_value$subexpression$1", "symbols": [/[oO]/, /[nN]/, {"literal":" "}, /[uU]/, /[pP]/, /[dD]/, /[aA]/, /[tT]/, /[eE]/, {"literal":" "}, /[cC]/, /[uU]/, /[rR]/, /[rR]/, /[eE]/, /[nN]/, /[tT]/, {"literal":"_"}, /[tT]/, /[iI]/, /[mM]/, /[eE]/, /[sS]/, /[tT]/, /[aA]/, /[mM]/, /[pP]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "field_update_value", "symbols": ["field_update_value$subexpression$1"], "postprocess": 
+    {"name": "field_update_value$subexpression$1", "symbols": [/[oO]/, /[nN]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_update_value$subexpression$2", "symbols": [/[uU]/, /[pP]/, /[dD]/, /[aA]/, /[tT]/, /[eE]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_update_value$subexpression$3", "symbols": [/[cC]/, /[uU]/, /[rR]/, /[rR]/, /[eE]/, /[nN]/, /[tT]/, {"literal":"_"}, /[tT]/, /[iI]/, /[mM]/, /[eE]/, /[sS]/, /[tT]/, /[aA]/, /[mM]/, /[pP]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_update_value", "symbols": ["field_update_value$subexpression$1", "__", "field_update_value$subexpression$2", "__", "field_update_value$subexpression$3"], "postprocess": 
         d => {
             return {
                 key: 'ON UPDATE CURRENT_TIMESTAMP',
@@ -464,10 +471,11 @@ var grammar = {
             };
         }
                 },
-    {"name": "field_charset$subexpression$1$subexpression$1", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[aA]/, /[cC]/, /[tT]/, /[eE]/, /[rR]/, {"literal":" "}, /[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$1"]},
-    {"name": "field_charset$subexpression$1$subexpression$2", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
-    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$2"]},
+    {"name": "field_charset$subexpression$1$subexpression$1", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[aA]/, /[cC]/, /[tT]/, /[eE]/, /[rR]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset$subexpression$1$subexpression$2", "symbols": [/[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$1", "__", "field_charset$subexpression$1$subexpression$2"]},
+    {"name": "field_charset$subexpression$1$subexpression$3", "symbols": [/[cC]/, /[hH]/, /[aA]/, /[rR]/, /[sS]/, /[eE]/, /[tT]/], "postprocess": function(d) {return d.join(""); }},
+    {"name": "field_charset$subexpression$1", "symbols": ["field_charset$subexpression$1$subexpression$3"]},
     {"name": "field_charset", "symbols": ["field_charset$subexpression$1", "__", "word"], "postprocess": 
         d => {
             return {

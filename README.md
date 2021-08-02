@@ -3,13 +3,14 @@
 解析 mysql create table 语句，用于通过建表语句生成 model 代码文件。
 
 ```
-yarn install
+yarn install @mmzp/sql-parser
 yarn dev
 ```
+
 或
 
 ```
-npm i
+npm i @mmzp/sql-parser
 npm run dev
 ```
 
@@ -23,8 +24,7 @@ npm run browser
 
 [在线示例 https://mmzp.github.io/sql-parser/browser/demo.html](https://mmzp.github.io/sql-parser/browser/demo.html)
 
-------
-
+---
 
 解析结果如下：
 

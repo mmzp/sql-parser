@@ -16,7 +16,7 @@ column_def
                     const optionInfo = _item;
                     if (optionInfo && optionInfo.key) {
                         switch (optionInfo.key) {
-                            case 'NOT NULL': allow_null = !optionInfo.value; break;
+                            case 'NOT NULL': allow_null = optionInfo.value; break;
                             case 'AUTO_INCREMENT': auto_increment = optionInfo.value; break;
                             case 'COMMENT': comment = optionInfo.value; break;
                             case 'DEFAULT': default_value = optionInfo.value; break;
@@ -54,11 +54,11 @@ column_def
 	%}
 
 column_def_options
-    -> _ column_def_option _ {% d => [d[1]] %}
+    -> column_def_option {% d => [d[0]] %}
     | column_def_options __ column_def_option {% d => d[0].concat(d[2]) %}
 
 column_def_option
-    -> field_not_null {% d => d[0] %}
+    -> field_not_null {% d => d[1] %}
     | field_auto_increment {% d => d[0] %}
     | field_comment {% d => d[0] %}
     | field_default_value {% d => d[0] %}
@@ -66,11 +66,15 @@ column_def_option
     | field_charset {% d => d[0] %}
 
 field_not_null
-    -> ("NOT NULL"i | "NULL"i) {%
+    -> ("NOT"i __ "NULL"i | "NULL"i) {%
             d => {
+                let allow_null = true;
+                if (d[0][0] && d[0][2] && (d[0][0] + ' ' + d[0][2]).toUpperCase() === 'NOT NULL') {
+                    allow_null = false;
+                }
                 return {
                     key: 'NOT NULL',
-                    value: d[0][0] && d[0][0].toUpperCase() === 'NOT NULL',
+                    value: allow_null,
                 };
             }
         %}
@@ -96,7 +100,7 @@ field_default_value
         %}
 
 field_update_value
-    -> "ON UPDATE CURRENT_TIMESTAMP"i {%
+    -> "ON"i __ "UPDATE"i __ "CURRENT_TIMESTAMP"i {%
             d => {
                 return {
                     key: 'ON UPDATE CURRENT_TIMESTAMP',
@@ -106,7 +110,7 @@ field_update_value
         %}
 
 field_charset
-    -> ("CHARACTER SET"i | "CHARSET"i) __ word {%
+    -> ("CHARACTER"i __ "SET"i | "CHARSET"i) __ word {%
             d => {
                 return {
                     key: 'CHARSET',

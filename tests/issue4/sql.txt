@@ -1,0 +1,10 @@
+create table test
+(
+    id              bigint unsigned auto_increment comment '',
+    name      varchar(150)    default ''   not null comment '',
+    name_en   varchar(150)    default ''   not null comment '',
+    id2        bigint unsigned default 0    not null comment '',
+    name2      varchar(150)    default ''   not null comment '',
+    star      tinyint(2)      default 0    not null comment ''
+);
+
